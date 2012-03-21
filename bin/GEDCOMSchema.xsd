@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/GEDCOMSchema"
+	xmlns:tns="http://www.example.org/GEDCOMSchema" elementFormDefault="qualified">
+	<element name="gedcom">
+		<complexType>
+			<sequence>
+				<element name="indi" type="tns:indi" minOccurs="0"
+					maxOccurs="unbounded" />
+				<element name="fam" type="tns:fam" minOccurs="0" maxOccurs="unbounded" />
+				
+				<element name="note" type="tns:note" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="indi">
+		<sequence>
+			<element name="name">
+				<complexType>
+					<sequence>
+						<element name="surn" type="string" />
+						<element name="givn" type="string" />
+					</sequence>
+					<attribute name="value" use="required" />
+				</complexType>
+			</element>
+			<element name="sex" type="string" />
+			<element name="birth">
+				<complexType>
+					<sequence>
+						<element name="date" type="string" />
+						<element name="plac" type="string" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="deat">
+				<complexType>
+					<sequence>
+						<element name="date" type="string"></element>
+					</sequence>
+					<attribute name="value" use="required"></attribute>
+				</complexType>
+			</element>
+			<element name="occu" type="string" />
+			<element name="titl" type="string" />
+			<element name="famc" type="string" />
+			<element name="fams" type="string" />
+			<element name="note" type="string" />
+			<element name="chan">
+				<complexType>
+					<sequence>
+						<element name="date" type="string"></element>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="id" use="required" />
+	</complexType>
+	<complexType name="fam">
+		<sequence>
+			<element name="husb" type="string"></element>
+			<element name="wife" type="string"></element>
+			<element name="marr">
+				<complexType>
+					<sequence>
+						<element name="date" type="string"></element>
+						<element name="plac" type="string"></element>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="chil" type="string" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="note" type="string"></element>
+		</sequence>
+		<attribute name="id" use="required"></attribute>
+	</complexType>
+	<complexType name="note">
+	<sequence>
+	<element name="conc" type="string"></element>
+	<element name="cont" type="string"></element>
+	</sequence>
+	<attribute name="id" use="required"></attribute>
+	</complexType>
+</schema>
