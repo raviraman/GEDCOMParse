@@ -60,6 +60,7 @@ public class GedcomParser {
 					.getProperty(OUTPUT_FILE_NAME)));
 
 			m.marshal(gedcom, os);
+			System.out.println("File Generated !");
 
 		} catch (JAXBException e) {
 

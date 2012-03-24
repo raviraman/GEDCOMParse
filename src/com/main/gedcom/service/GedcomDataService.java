@@ -7,15 +7,18 @@ import com.main.gedcom.jaxb.Fam;
 import com.main.gedcom.jaxb.Gedcom;
 import com.main.gedcom.jaxb.Indi;
 import com.main.gedcom.jaxb.Note;
+import com.main.gedcom.jaxb.ObjectFactory;
 import com.main.gedcom.jaxb.Fam.Marr;
 import com.main.gedcom.jaxb.Indi.Birth;
 import com.main.gedcom.jaxb.Indi.Chan;
 import com.main.gedcom.jaxb.Indi.Deat;
 import com.main.gedcom.jaxb.Indi.Name;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import static com.main.gedcom.constants.Constants.*;
 
 public class GedcomDataService {
+	ObjectFactory objectFactory = new ObjectFactory();
 	Gedcom gedcom;
 	Indi indi;
 	Fam fam;
@@ -29,11 +32,11 @@ public class GedcomDataService {
 
 	public Gedcom generateData(List<String> gedcomData) {
 
-		gedcom = new Gedcom();
+		gedcom = objectFactory.createGedcom();
 		List<Indi> indiList = new ArrayList<Indi>();
 		List<Fam> famList = new ArrayList<Fam>();
 		List<Note> noteList = new ArrayList<Note>();
-		
+
 		for (String data : gedcomData) {
 			try {
 				int firstChar = Character.getNumericValue(data.charAt(0));
@@ -45,7 +48,7 @@ public class GedcomDataService {
 						indi = null;
 					}
 					if (fam != null) {
-						
+
 						if (childList != null && !childList.isEmpty()) {
 							fam.getChil().addAll(childList);
 						}
@@ -61,7 +64,7 @@ public class GedcomDataService {
 					break;
 				case 1:
 					childNodes(data);
-					
+
 					break;
 				case 2:
 					leafNodes(data);
@@ -123,7 +126,7 @@ public class GedcomDataService {
 	private void childNodes(String data) {
 		if (rootNode.equalsIgnoreCase(ROOT_INDI)) {
 			if (data.contains(INDI_NAME)) {
-				Name name = new Name();
+				Name name = objectFactory.createIndiName();
 				name.setValue(data.replace("1 NAME", "").trim().trim());
 				if (name.getValue() != null && name.getValue().contains("/")) {
 					name.setSurn(name.getValue().substring(
@@ -136,7 +139,7 @@ public class GedcomDataService {
 			} else if (data.contains(INDI_SEX)) {
 				indi.setSex(Character.toString(data.charAt(data.length() - 1)));
 			} else if (data.contains(INDI_BIRT)) {
-				birth = new Birth();
+				birth = objectFactory.createIndiBirth();
 				death = null;
 				chan = null;
 
@@ -151,13 +154,13 @@ public class GedcomDataService {
 			} else if (data.contains(INDI_NOTE)) {
 				indi.setNote(data.replace("1 NOTE", "").trim());
 			} else if (data.contains(INDI_DEAT)) {
-				death = new Deat();
+				death = objectFactory.createIndiDeat();
 				death.setValue(Character.toString(data
 						.charAt(data.length() - 1)));
 				birth = null;
 				chan = null;
 			} else if (data.contains(INDI_CHAN)) {
-				chan = new Chan();
+				chan = objectFactory.createIndiChan();
 				birth = null;
 				death = null;
 			}
@@ -171,17 +174,17 @@ public class GedcomDataService {
 				childList.add(data.replace("1 CHIL", "").trim());
 
 			} else if (data.contains(FAM_MARR)) {
-				marraige = new Marr();
+				marraige = objectFactory.createFamMarr();
 
-			}else if(data.contains(FAM_NOTE)){
+			} else if (data.contains(FAM_NOTE)) {
 				fam.setNote(data.replace("1 NOTE", "").trim());
 			}
-			
+
 		}
 		if (rootNode.equalsIgnoreCase(ROOT_NOTE)) {
-			if(data.contains(NOTE_CONC)){
+			if (data.contains(NOTE_CONC)) {
 				note.setConc(data.replace("1 CONC", "").trim());
-			}else if(data.contains(NOTE_CONT)){
+			} else if (data.contains(NOTE_CONT)) {
 				note.setCont(data.replace("1 CONT", "").trim());
 			}
 		}
@@ -190,22 +193,21 @@ public class GedcomDataService {
 
 	private void rootNodes(String data) {
 
-		// TODO Auto-generated method stub
 		if (data.contains(ROOT_INDI)) {
-			indi = new Indi();
+			indi = objectFactory.createIndi();
 			rootNode = ROOT_INDI;
 			indi.setId(data.substring(data.indexOf("@"),
 					data.lastIndexOf("@") + 1));
 		}
 		if (data.contains(ROOT_FAM)) {
-			fam = new Fam();
+			fam = objectFactory.createFam();
 			rootNode = ROOT_FAM;
 			childList = new ArrayList<String>();
 			fam.setId(data.substring(data.indexOf("@"),
 					data.lastIndexOf("@") + 1));
 		}
 		if (data.contains(ROOT_NOTE)) {
-			note = new Note();
+			note = objectFactory.createNote();
 			rootNode = ROOT_NOTE;
 			note.setId(data.substring(data.indexOf("@"),
 					data.lastIndexOf("@") + 1));
