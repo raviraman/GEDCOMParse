@@ -1,12 +1,9 @@
 package com.main.gedcom.parser;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
+
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.Buffer;
 import java.util.List;
 import java.util.Properties;
 
@@ -25,7 +22,7 @@ import static com.main.gedcom.constants.Constants.*;
 
 /**
  * @author Ravi
- *
+ * 
  */
 public class GedcomParser {
 
